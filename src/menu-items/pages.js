@@ -1,34 +1,32 @@
 // assets
-import { LoginOutlined, ProfileOutlined } from '@ant-design/icons';
+import { PlusCircleOutlined, ProfileOutlined } from '@ant-design/icons';
 
 // icons
 const icons = {
-  LoginOutlined,
+  PlusCircleOutlined,
   ProfileOutlined
 };
 
 // ==============================|| MENU ITEMS - EXTRA PAGES ||============================== //
 
 const pages = {
-  id: 'authentication',
-  title: 'Authentication',
+  id: 'expenses',
+  title: 'Expenses',
   type: 'group',
   children: [
     {
-      id: 'login1',
-      title: 'Login',
+      id: 'add-expenses',
+      title: 'Add Expense',
       type: 'item',
-      url: '/login',
-      icon: icons.LoginOutlined,
-      target: true
+      url: '/add-expenses',
+      icon: icons.PlusCircleOutlined
     },
     {
-      id: 'register1',
-      title: 'Register',
+      id: 'expenses',
+      title: 'Expenses History',
       type: 'item',
-      url: '/register',
-      icon: icons.ProfileOutlined,
-      target: true
+      url: '/expenses',
+      icon: icons.ProfileOutlined
     }
   ]
 };
