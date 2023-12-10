@@ -1,13 +1,13 @@
 # Frontend Finance Manager
 
-Finance Manager frontend. THe objetive of this application is to help people manage their personal finances keeping track of expenses and controlling agains their monthly budget. 
+Finance Manager frontend. The objetive of this application is to help people manage their personal finances keeping track of expenses and controlling agains their monthly budget. 
 
 This project was created using [Mantis Free Template](https://github.com/codedthemes/mantis-free-react-admin-template/tree/main) and run with [Bun](https://bun.sh/).
 
 
 ## Installation
 
-First install Bun. If you need help check (Bun website)[https://bun.sh/]. 
+First install Bun. If you need help check [Bun website](https://bun.sh/). 
 
 Then, install dependencies with the following command:
 `bun install`
