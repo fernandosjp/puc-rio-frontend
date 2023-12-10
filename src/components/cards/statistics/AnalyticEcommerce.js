@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 
 // material-ui
-import { Box, Chip, Grid, Stack, Typography } from '@mui/material';
+import { Chip, Grid, Stack, Typography } from '@mui/material';
 
 // project import
 import MainCard from 'components/MainCard';
@@ -9,9 +9,12 @@ import MainCard from 'components/MainCard';
 // assets
 import { RiseOutlined, FallOutlined } from '@ant-design/icons';
 
+// third-party
+import NumberFormat from 'react-number-format';
+
 // ==============================|| STATISTICS - ECOMMERCE CARD  ||============================== //
 
-const AnalyticEcommerce = ({ color, title, count, percentage, isLoss, extra }) => (
+const AnalyticEcommerce = ({ title, count, percentage, isLoss, isMoney }) => (
   <MainCard contentSX={{ p: 2.25 }}>
     <Stack spacing={0.5}>
       <Typography variant="h6" color="textSecondary">
@@ -20,21 +23,29 @@ const AnalyticEcommerce = ({ color, title, count, percentage, isLoss, extra }) =
       <Grid container alignItems="center">
         <Grid item>
           <Typography variant="h4" color="inherit">
-            {count}
+            <NumberFormat
+              value={count}
+              displayType="text"
+              thousandSeparator="."
+              decimalSeparator=","
+              decimalScale={isMoney ? 2 : 0}
+              fixedDecimalScale
+              prefix=""
+            />
           </Typography>
         </Grid>
         {percentage && (
           <Grid item>
             <Chip
               variant="combined"
-              color={color}
+              color={!isLoss ? 'success' : 'warning'}
               icon={
                 <>
                   {!isLoss && <RiseOutlined style={{ fontSize: '0.75rem', color: 'inherit' }} />}
                   {isLoss && <FallOutlined style={{ fontSize: '0.75rem', color: 'inherit' }} />}
                 </>
               }
-              label={`${percentage}%`}
+              label={`${percentage}% YoY`}
               sx={{ ml: 1.25, pl: 1 }}
               size="small"
             />
@@ -42,7 +53,7 @@ const AnalyticEcommerce = ({ color, title, count, percentage, isLoss, extra }) =
         )}
       </Grid>
     </Stack>
-    <Box sx={{ pt: 2.25 }}>
+    {/* <Box sx={{ pt: 2.25 }}>
       <Typography variant="caption" color="textSecondary">
         You made an extra{' '}
         <Typography component="span" variant="caption" sx={{ color: `${color || 'primary'}.main` }}>
@@ -50,21 +61,17 @@ const AnalyticEcommerce = ({ color, title, count, percentage, isLoss, extra }) =
         </Typography>{' '}
         this year
       </Typography>
-    </Box>
+    </Box> */}
   </MainCard>
 );
 
 AnalyticEcommerce.propTypes = {
-  color: PropTypes.string,
   title: PropTypes.string,
-  count: PropTypes.string,
+  count: PropTypes.number,
   percentage: PropTypes.number,
   isLoss: PropTypes.bool,
+  isMoney: PropTypes.bool,
   extra: PropTypes.oneOfType([PropTypes.node, PropTypes.string])
-};
-
-AnalyticEcommerce.defaultProps = {
-  color: 'primary'
 };
 
 export default AnalyticEcommerce;

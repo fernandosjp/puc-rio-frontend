@@ -9,7 +9,7 @@ const DashboardDefault = Loadable(lazy(() => import('pages/dashboard')));
 
 // render - pages
 const AddExpense = Loadable(lazy(() => import('pages/expense-add/expense-add')));
-const Expenses = Loadable(lazy(() => import('pages/expenses/index')));
+const Expenses = Loadable(lazy(() => import('pages/expenses-history/index')));
 
 // render - support
 const Documentation = Loadable(lazy(() => import('pages/Documentation')));

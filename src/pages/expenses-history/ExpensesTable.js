@@ -4,25 +4,46 @@ import { Link as RouterLink } from 'react-router-dom';
 import axios from 'axios';
 
 // material-ui
-import { Box, Link, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material';
+import { Box, Link, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, IconButton } from '@mui/material';
 
-// project import
-import Dot from 'components/@extended/Dot';
+// third-party
+import NumberFormat from 'react-number-format';
+
+// assets
+import { CloseOutlined } from '@ant-design/icons';
 
 // ==============================|| ORDER TABLE - HEADER CELL ||============================== //
 
 const headCells = [
   {
+    id: 'created_at',
+    align: 'center',
+    disablePadding: false,
+    label: 'Created at'
+  },
+  {
     id: 'id',
     align: 'center',
     disablePadding: false,
-    label: 'Group ID'
+    label: 'ID'
   },
   {
-    id: 'name',
+    id: 'description',
     align: 'center',
     disablePadding: true,
-    label: 'Group Name'
+    label: 'Description'
+  },
+  {
+    id: 'category',
+    align: 'center',
+    disablePadding: true,
+    label: 'Category'
+  },
+  {
+    id: 'value',
+    align: 'center',
+    disablePadding: true,
+    label: 'Value'
   },
   {
     id: 'action',
@@ -58,58 +79,22 @@ OrderTableHead.propTypes = {
   orderBy: PropTypes.string
 };
 
-// ==============================|| ORDER TABLE - STATUS ||============================== //
-
-const OrderStatus = ({ status }) => {
-  let color;
-  let title;
-
-  switch (status) {
-    case 0:
-      color = 'warning';
-      title = 'Pending';
-      break;
-    case 1:
-      color = 'success';
-      title = 'Approved';
-      break;
-    case 2:
-      color = 'error';
-      title = 'Rejected';
-      break;
-    default:
-      color = 'primary';
-      title = 'None';
-  }
-
-  return (
-    <Stack direction="row" spacing={1} alignItems="center">
-      <Dot color={color} />
-      <Typography>{title}</Typography>
-    </Stack>
-  );
-};
-
-OrderStatus.propTypes = {
-  status: PropTypes.number
-};
-
 // ==============================|| ORDER TABLE ||============================== //
 
 export default function ExpensesTable() {
-  const [order] = useState('asc');
-  const [orderBy] = useState('trackingNo');
+  const [order] = useState('desc');
+  const [orderBy] = useState('created_at');
   const [selected] = useState([]);
-  const [groupList, setGroupList] = useState([]);
+  const [expenseList, setExpenseList] = useState([]);
 
   useEffect(() => {
     axios
-      .get('http://127.0.0.1:5000/group_all')
-      .then((res) => setGroupList(res.data.groups))
+      .get('http://127.0.0.1:5000/expense_all')
+      .then((res) => setExpenseList(res.data.expenses), [expenseList])
       .catch((error) => console.log(error));
-  }, []);
+  }, [expenseList]);
 
-  const isSelected = (trackingNo) => selected.indexOf(trackingNo) !== -1;
+  const isSelected = (id) => selected.indexOf(id) !== -1;
 
   return (
     <Box>
@@ -136,15 +121,15 @@ export default function ExpensesTable() {
         >
           <OrderTableHead order={order} orderBy={orderBy} />
           <TableBody>
-            {groupList.map((row, index) => {
-              console.log('Group name: ' + row.name);
+            {expenseList.map((row, index) => {
+              console.log('Expense desc: ' + row.description);
               const isItemSelected = isSelected(row.id);
               const labelId = `enhanced-table-checkbox-${index}`;
-              // Function to delete a group
+              // Function to delete a expense
               const deleteProduct = () => {
-                if (window.confirm(`Do you want to DELETE group?`)) {
+                if (window.confirm(`Do you want to DELETE expense?`)) {
                   axios
-                    .delete(`http://localhost:5000/groups?id=${row.id}`)
+                    .delete(`http://localhost:5000/expenses?id=${row.id}`)
                     .then((response) => {
                       console.log('Resource deleted successfully:', response.data);
                       alert(response.data.message);
@@ -169,16 +154,21 @@ export default function ExpensesTable() {
                   key={row.id}
                   selected={isItemSelected}
                 >
+                  <TableCell align="center">{row.created_at}</TableCell>
                   <TableCell component="th" id={labelId} scope="row" align="center">
                     <Link color="secondary" component={RouterLink} to="">
                       {row.id}
                     </Link>
                   </TableCell>
-                  <TableCell align="center">{row.name}</TableCell>
+                  <TableCell align="center">{row.description}</TableCell>
+                  <TableCell align="center">{row.category}</TableCell>
+                  <TableCell align="right">
+                    <NumberFormat value={row.value} displayType="text" thousandSeparator decimalScale={2} fixedDecimalScale prefix="US$" />
+                  </TableCell>
                   <TableCell align="center">
-                    <button className="delete" onClick={deleteProduct}>
-                      Delete
-                    </button>
+                    <IconButton shape="rounded" color="error" onClick={deleteProduct}>
+                      <CloseOutlined />
+                    </IconButton>
                   </TableCell>
                 </TableRow>
               );
