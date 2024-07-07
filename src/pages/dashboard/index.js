@@ -14,14 +14,17 @@ import AnalyticEcommerce from 'components/cards/statistics/AnalyticEcommerce';
 
 const DashboardDefault = () => {
   const [expenseStats, setExpenseStats] = useState({
-    total_value: 0,
-    total_value_perc: 0,
+    total_value_usd: 0,
+    total_value_usd_perc: 0,
+    total_value_brl: 0,
+    total_value_brl_perc: 0,
     total_transactions: 0,
     total_transactions_perc: 0
   });
   const [statsSeries, setStatsSeries] = useState({
     transactions: { data: [0, 0, 0, 0], categories: [0, 0, 0, 0] },
-    value: { data: [0, 0, 0, 0], categories: [0, 0, 0, 0] }
+    value_usd: { data: [0, 0, 0, 0], categories: [0, 0, 0, 0] },
+    value_brl: { data: [0, 0, 0, 0], categories: [0, 0, 0, 0] }
   });
 
   // Cards Data
@@ -50,18 +53,18 @@ const DashboardDefault = () => {
       <Grid item xs={4}>
         <AnalyticEcommerce
           title="Total Spent in USD"
-          count={parseFloat(expenseStats['total_value'])}
-          percentage={parseFloat(expenseStats['total_value_perc'])}
-          isLoss={expenseStats['total_value_perc'] < 0}
+          count={parseFloat(expenseStats['total_value_usd'])}
+          percentage={parseFloat(expenseStats['total_value_usd_perc'])}
+          isLoss={expenseStats['total_value_usd_perc'] < 0}
           isMoney={true}
         />
       </Grid>
       <Grid item xs={4}>
         <AnalyticEcommerce
           title="Total Spent in BRL"
-          count={parseFloat(expenseStats['total_value'] * 5)}
-          percentage={parseFloat(expenseStats['total_value_perc'])}
-          isLoss={expenseStats['total_value_perc'] < 0}
+          count={parseFloat(expenseStats['total_value_brl'])}
+          percentage={parseFloat(expenseStats['total_value_brl_perc'])}
+          isLoss={expenseStats['total_value_brl_perc'] < 0}
           isMoney={true}
         />
       </Grid>
@@ -87,11 +90,27 @@ const DashboardDefault = () => {
         </Grid>
         <MainCard content={false} sx={{ mt: 1.5 }}>
           <Box sx={{ pt: 1, pr: 2 }}>
-            <ValueSpentChart data={statsSeries['value']} />
+            <ValueSpentChart data={statsSeries['value_usd']} budget={4000} />
           </Box>
         </MainCard>
       </Grid>
       <Grid item xs={6}>
+        <Grid container alignItems="center" justifyContent="space-between">
+          <Grid item>
+            <Typography variant="h5">Total Spent in BRL per Month</Typography>
+          </Grid>
+        </Grid>
+        <MainCard content={false} sx={{ mt: 1.5 }}>
+          <Box sx={{ pt: 1, pr: 2 }}>
+            <ValueSpentChart data={statsSeries['value_brl']} budget={20000} />
+          </Box>
+        </MainCard>
+      </Grid>
+
+      <Grid item xs={12} sx={{ display: { sm: 'none', md: 'block', lg: 'none' } }} />
+
+      {/* row 3 */}
+      <Grid item xs={12}>
         <Grid container alignItems="center" justifyContent="space-between">
           <Grid item>
             <Typography variant="h5">Total Transactions per Month</Typography>
@@ -103,10 +122,6 @@ const DashboardDefault = () => {
           </Box>
         </MainCard>
       </Grid>
-
-      <Grid item xs={12} sx={{ display: { sm: 'none', md: 'block', lg: 'none' } }} />
-
-      {/* row 3 */}
       {/* <Grid item xs={6}>
         <MainCard content={false} sx={{ mt: 1.5 }}>
           <Box sx={{ pt: 1, pr: 2 }}>

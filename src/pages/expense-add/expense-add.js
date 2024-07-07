@@ -22,7 +22,7 @@ const AddExpense = () => {
     created_at: '',
     description: '',
     category: '',
-    value: ''
+    value_usd: ''
   });
 
   const handleChange = (event) => {
@@ -30,11 +30,11 @@ const AddExpense = () => {
       var thousandSeparator = '.';
       var decimalSeparator = ',';
 
-      return parseFloat(stringNumber.replace('US$', '').replace(thousandSeparator, '').replace(decimalSeparator, '.'));
+      return parseFloat(stringNumber.replace('US$ ', '').replace(thousandSeparator, '').replace(decimalSeparator, '.'));
     }
 
     let isNumber = Boolean(false);
-    event.target.id == 'value' ? (isNumber = true) : (isNumber = false);
+    event.target.id == 'value_usd' ? (isNumber = true) : (isNumber = false);
 
     setInputs((values) => {
       return { ...values, [event.target.id]: isNumber ? parseLocaleNumber(event.target.value) : event.target.value };
@@ -57,7 +57,7 @@ const AddExpense = () => {
           created_at: '',
           description: '',
           category: '',
-          value: ''
+          value_usd: ''
         });
       })
       .catch((error) => {
@@ -88,15 +88,15 @@ const AddExpense = () => {
               />
               <CategorySelect id="category" value={inputs.category} onChange={handleChange} />
               <NumberFormat
-                id="value"
+                id="value_usd"
                 placeholder="Value"
                 value={inputs.value}
                 type="float"
                 thousandSeparator="."
                 decimalSeparator=","
                 decimalScale={2}
-                helperText="Value"
-                prefix="US$"
+                helperText="Value in USD"
+                prefix="US$ "
                 onChange={handleChange}
                 customInput={TextField}
               />

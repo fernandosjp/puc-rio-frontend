@@ -30,7 +30,7 @@ const areaChartOptions = {
 
 // ==============================|| VALUE SPENT AREA CHART ||============================== //
 
-const ValueSpentChart = ({ data }) => {
+const ValueSpentChart = ({ data, budget }) => {
   const theme = useTheme();
 
   const { primary, secondary } = theme.palette.text;
@@ -38,7 +38,6 @@ const ValueSpentChart = ({ data }) => {
 
   const [options, setOptions] = useState(areaChartOptions);
   const [series, setSeries] = useState([]);
-  const budget = 4000;
 
   useEffect(() => {
     setSeries([
@@ -88,13 +87,14 @@ const ValueSpentChart = ({ data }) => {
         theme: 'light'
       }
     }));
-  }, [primary, secondary, line, theme, data]);
+  }, [primary, secondary, line, theme, data, budget]);
 
   return <ReactApexChart options={options} series={series} type="line" height={450} />;
 };
 
 ValueSpentChart.propTypes = {
-  data: PropTypes.object
+  data: PropTypes.object,
+  budget: PropTypes.number
 };
 
 export default ValueSpentChart;

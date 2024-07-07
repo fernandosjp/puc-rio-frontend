@@ -10,7 +10,8 @@ import { Box, Link, Table, TableBody, TableCell, TableContainer, TableHead, Tabl
 import NumberFormat from 'react-number-format';
 
 // assets
-import { CloseOutlined } from '@ant-design/icons';
+import { DeleteOutlined } from '@ant-design/icons';
+import { EditOutlined } from '@ant-design/icons';
 
 // ==============================|| ORDER TABLE - HEADER CELL ||============================== //
 
@@ -40,10 +41,16 @@ const headCells = [
     label: 'Category'
   },
   {
-    id: 'value',
+    id: 'value_usd',
     align: 'center',
     disablePadding: true,
-    label: 'Value'
+    label: 'Value USD'
+  },
+  {
+    id: 'value_brl',
+    align: 'center',
+    disablePadding: true,
+    label: 'Value BRL'
   },
   {
     id: 'action',
@@ -163,11 +170,31 @@ export default function ExpensesTable() {
                   <TableCell align="center">{row.description}</TableCell>
                   <TableCell align="center">{row.category}</TableCell>
                   <TableCell align="right">
-                    <NumberFormat value={row.value} displayType="text" thousandSeparator decimalScale={2} fixedDecimalScale prefix="US$" />
+                    <NumberFormat
+                      value={row.value_usd}
+                      displayType="text"
+                      thousandSeparator
+                      decimalScale={2}
+                      fixedDecimalScale
+                      prefix="US$ "
+                    />
+                  </TableCell>
+                  <TableCell align="right">
+                    <NumberFormat
+                      value={row.value_brl}
+                      displayType="text"
+                      thousandSeparator
+                      decimalScale={2}
+                      fixedDecimalScale
+                      prefix="R$ "
+                    />
                   </TableCell>
                   <TableCell align="center">
                     <IconButton shape="rounded" color="error" onClick={deleteProduct}>
-                      <CloseOutlined />
+                      <DeleteOutlined />
+                    </IconButton>
+                    <IconButton shape="rounded" color="yellow" onClick={deleteProduct}>
+                      <EditOutlined />
                     </IconButton>
                   </TableCell>
                 </TableRow>
