@@ -4,7 +4,7 @@ import { Link as RouterLink } from 'react-router-dom';
 import axios from 'axios';
 
 // material-ui
-import { Box, Link, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, IconButton } from '@mui/material';
+import { Box, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, IconButton } from '@mui/material';
 
 // third-party
 import NumberFormat from 'react-number-format';
@@ -89,6 +89,7 @@ OrderTableHead.propTypes = {
 // ==============================|| ORDER TABLE ||============================== //
 
 export default function ExpensesTable() {
+  const [refresh, setRefresh] = useState(false);
   const [order] = useState('desc');
   const [orderBy] = useState('created_at');
   const [selected] = useState([]);
@@ -97,9 +98,9 @@ export default function ExpensesTable() {
   useEffect(() => {
     axios
       .get('http://127.0.0.1:5000/expense_all')
-      .then((res) => setExpenseList(res.data.expenses), [expenseList])
+      .then((res) => setExpenseList(res.data.expenses))
       .catch((error) => console.log(error));
-  }, [expenseList]);
+  }, [refresh]);
 
   const isSelected = (id) => selected.indexOf(id) !== -1;
 
@@ -139,12 +140,8 @@ export default function ExpensesTable() {
                     .delete(`http://localhost:5000/expenses?id=${row.id}`)
                     .then((response) => {
                       console.log('Resource deleted successfully:', response.data);
-                      alert(response.data.message);
-                      // return (
-                      //   <Alert variant="border" color="success">
-                      //     response.data.message
-                      //   </Alert>
-                      // );
+                      // alert(response.data.message);
+                      refresh ? setRefresh(false) : setRefresh(true);
                     })
                     .catch((error) => {
                       console.error('Error deleting resource:', error);
@@ -163,9 +160,7 @@ export default function ExpensesTable() {
                 >
                   <TableCell align="center">{row.created_at}</TableCell>
                   <TableCell component="th" id={labelId} scope="row" align="center">
-                    <Link color="secondary" component={RouterLink} to="">
-                      {row.id}
-                    </Link>
+                    {row.id}
                   </TableCell>
                   <TableCell align="center">{row.description}</TableCell>
                   <TableCell align="center">{row.category}</TableCell>
@@ -193,7 +188,7 @@ export default function ExpensesTable() {
                     <IconButton shape="rounded" color="error" onClick={deleteProduct}>
                       <DeleteOutlined />
                     </IconButton>
-                    <IconButton shape="rounded" color="yellow" onClick={deleteProduct}>
+                    <IconButton shape="rounded" color="yellow" component={RouterLink} to={`/edit-expenses?id=${row.id}`}>
                       <EditOutlined />
                     </IconButton>
                   </TableCell>

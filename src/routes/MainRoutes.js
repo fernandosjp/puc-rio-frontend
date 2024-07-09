@@ -9,6 +9,7 @@ const DashboardDefault = Loadable(lazy(() => import('pages/dashboard')));
 
 // render - pages
 const AddExpense = Loadable(lazy(() => import('pages/expense-add/expense-add')));
+const EditExpense = Loadable(lazy(() => import('pages/expense-edit/expense-edit')));
 const Expenses = Loadable(lazy(() => import('pages/expenses-history/index')));
 
 // render - support
@@ -40,6 +41,10 @@ const MainRoutes = {
     {
       path: 'add-expenses',
       element: <AddExpense />
+    },
+    {
+      path: 'edit-expenses',
+      element: <EditExpense />
     },
     {
       path: 'documentation',
